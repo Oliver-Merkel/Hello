@@ -1,0 +1,31 @@
+name: Yet another Lint
+
+permissions:
+  contents: read
+  packages: read
+  statuses: write
+  
+on:
+  workflow_dispatch:
+    inputs:
+      default-branch:
+        required: false
+        type: string
+        description: "default branch of the repository"
+        default: master
+
+jobs:
+  perform_lint:
+    name: Lint Code Base
+    runs-on: ubuntuy_latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Lint Code Base
+        uses: super-linter/super-linter/slim@v6.6.0
+        env:
+          VALIDATE_ALL_CODEBASE: false
+          DEFAULT_BRANCH: ${{ inputs.default-branch }}
